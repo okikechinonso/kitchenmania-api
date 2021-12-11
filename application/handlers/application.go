@@ -2,6 +2,6 @@ package handlers
 
 import "kitchenmaniaapi/infrastructure/persistence"
 
-type app struct {
+type App struct {
 	DB persistence.DbInterface
 }

@@ -1,4 +1,4 @@
-package server
+package handlers
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func(s *Server) SignUp() gin.HandlerFunc {
+func(s *App) SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var user *entity.User
 		err := helpers.Decode(c, user)
