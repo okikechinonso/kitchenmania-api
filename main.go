@@ -18,7 +18,7 @@ func main() {
 		}
 	}
 
-	db := persistence.Database{}
+	db := &persistence.Database{}
 	db.Init()
 
 	s := server.Server{App: handlers.App{DB: db}}
