@@ -10,24 +10,25 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func(s *App) SignUp() gin.HandlerFunc {
+func (s *App) SignUp() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var user *entity.User
 		err := helpers.Decode(c, user)
 		if err != nil {
-			fmt.Errorf("enter all required field")
+			// fmt.Errorf("enter all required field")
+			response.JSON(c, "", http.StatusNotFound, nil, "enter all field")
 			return
 		}
-
-		hashedPassword,err := helpers.GenerateHashPassword(user.Password)
+		fmt.Println(user)
+		hashedPassword, err := helpers.GenerateHashPassword(user.Password)
 		if err != nil {
-			fmt.Errorf("internal serve error",err)
+			fmt.Errorf("internal serve error", err)
 			return
 		}
 		user.HashedPassword = string(hashedPassword)
-		 _,err = s.DB.FindUserByEmail(user.Email)
+		_, err = s.DB.FindUserByEmail(user.Email)
 		if err != nil {
-			response.JSON(c,"", http.StatusNotFound,nil,"user email already exist")
+			response.JSON(c, "", http.StatusNotFound, nil, "user email already exist")
 			return
 		}
 		err = s.DB.NewUser(user)
