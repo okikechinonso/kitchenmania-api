@@ -20,7 +20,7 @@ func main() {
 
 	db := &persistence.Database{}
 	db.Init()
-
+	db.Migrate()
 	s := server.Server{App: handlers.App{DB: db}}
 	s.Start()
 }
