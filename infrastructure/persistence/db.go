@@ -2,6 +2,7 @@ package persistence
 
 import (
 	"fmt"
+	"kitchenmaniaapi/domain/entity"
 	"log"
 	"os"
 
@@ -29,7 +30,15 @@ func (d *Database) Init() {
 
 	db, err := gorm.Open(postgres.Open(dsn),&gorm.Config{})
 	if err != nil{
-		fmt.Errorf("unable to connect to database",err)
+		log.Fatalf("unable to connect to database %v",err)
 	}
+
+	log.Println("connected to database")
 	d.DB = db
+}
+func (d *Database) Migrate(){
+	err := d.DB.AutoMigrate(&entity.User{})
+	if err != nil {
+		log.Printf("%s",err)
+	}
 }
