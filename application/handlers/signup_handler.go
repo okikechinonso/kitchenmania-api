@@ -40,7 +40,6 @@ func (a *App) SignUp() gin.HandlerFunc {
 			return
 		}
 		response.JSON(c, "", http.StatusBadRequest, nil, "user email already exist")
-		return
 	}
 }
 

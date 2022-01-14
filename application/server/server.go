@@ -18,6 +18,7 @@ type Server struct {
 
 func (s *Server) defineRoute(route *gin.Engine) {
 	route.POST("/signup", s.App.SignUp())
+	route.POST("/login",s.App.Login())
 }
 
 func (s *Server) setupRoute() *gin.Engine {
