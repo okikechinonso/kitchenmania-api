@@ -7,8 +7,8 @@ type Blog struct {
 	Title    string    `json:"title" gorm:"not null" binding:"required,title" form:"title"`
 	Body     string    `json:"body" gorm:"not null" binding:"required,body" form:"body"`
 	Images   []string  `json:"images" gorm:"not null" binding:"required,images" form:"images"`
-	Comments []Comment `json:"comments" form:"email"`
-	Like     int64     `json:"like" `
+	Comments []Comment `json:"comments,omitempty"`
+	Like     int64     `json:"like,omitempty"`
 }
 
 type Comment struct {
