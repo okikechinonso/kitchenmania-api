@@ -37,7 +37,7 @@ func (d *Database) Init() {
 	d.DB = db
 }
 func (d *Database) Migrate(){
-	err := d.DB.AutoMigrate(&entity.User{})
+	err := d.DB.AutoMigrate(&entity.User{},entity.Blacklist{},entity.Blog{})
 	if err != nil {
 		log.Printf("%s",err)
 	}

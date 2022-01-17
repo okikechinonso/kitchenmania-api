@@ -11,17 +11,17 @@ import (
 const AccessTokenValidity = time.Hour * 24 * 30
 const RefreshTokenValidity = time.Hour * 24
 
-func GenerateClaims(email string) (jwt.MapClaims, jwt.MapClaims) {
-	accessClaims := jwt.MapClaims{
+func GenerateClaims(email string) (accessClaims jwt.MapClaims, refreshClaims jwt.MapClaims) {
+	accessClaims = jwt.MapClaims{
 		"user_email": email,
 		"exp":        time.Now().Add(AccessTokenValidity).Unix(),
 	}
-	refreshClaims := jwt.MapClaims{
+	refreshClaims = jwt.MapClaims{
 		"exp": time.Now().Add(RefreshTokenValidity).Unix(),
 		"sub": 1,
 	}
 
-	return accessClaims, refreshClaims
+	return 
 }
 
 func GenerateToken(signMethod *jwt.SigningMethodHMAC, claims jwt.MapClaims, secret *string) (*string, error) {
