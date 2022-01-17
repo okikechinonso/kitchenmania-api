@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
 )
 
@@ -56,4 +57,13 @@ func AuthorizeToken(token *string, secret *string) (*jwt.Token, jwt.MapClaims, e
 		return token, claims, nil
 	}
 	return nil, nil, fmt.Errorf("empty token or secret")
+}
+
+// GetTokenFromHeader returns the token string in the authorization header
+func GetTokenFromHeader(c *gin.Context) string {
+	authHeader := c.Request.Header.Get("Authorization")
+	if len(authHeader) > 8 {
+		return authHeader[7:]
+	}
+	return ""
 }
