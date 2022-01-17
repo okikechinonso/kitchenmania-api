@@ -13,7 +13,8 @@ type Blog struct {
 
 type Comment struct {
 	Model
-	UserID   string	`json:"user_id" gorm:"foreignkey:User(id)"`
-	UserName string	`json:"user_name" gorm:"not null"`
+	BlogID   string `json:"blog_id" gorm:"foreignkey:Blog(id)"`
+	UserID   string `json:"user_id" gorm:"foreignkey:User(id)"`
+	UserName string `json:"user_name" gorm:"not null"`
 	Body     string `json:"body" gorm:"not null" binding:"required,body" form:"body"`
 }
