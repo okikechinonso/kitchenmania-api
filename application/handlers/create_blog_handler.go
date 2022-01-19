@@ -3,9 +3,9 @@ package handlers
 import (
 	"kitchenmaniaapi/domain/entity"
 	"kitchenmaniaapi/domain/service"
-	"kitchenmaniaapi/infrastructure/persistence"
 	"kitchenmaniaapi/interfaces/helpers"
 	"kitchenmaniaapi/interfaces/response"
+	"log"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -20,17 +20,12 @@ func (a *App) CreateBlog() gin.HandlerFunc {
 			response.JSON(c, "can't get user from context", http.StatusInternalServerError, nil, "no user found")
 			return
 		}
-		user, ok := userI.(entity.User)
+		user, ok := userI.(*entity.User)
 		if !ok {
 			response.JSON(c, "", http.StatusInternalServerError, nil, "Unable to decode user")
 			return
 		}
 		post := &entity.Blog{}
-		err := helpers.Decode(c, post)
-		if err != nil {
-			response.JSON(c, "", http.StatusInternalServerError, nil, "Unable to decode blog post"+err.Error())
-			return
-		}
 
 		form, err := c.MultipartForm()
 		if err != nil {
@@ -45,30 +40,32 @@ func (a *App) CreateBlog() gin.HandlerFunc {
 				return
 			}
 
-			if _,ok = helpers.CheckSupportedFile(strings.ToLower(f.Filename)); !ok{
+			if _, ok = helpers.CheckSupportedFile(strings.ToLower(f.Filename)); ok {
+				log.Println(filepath.Ext(f.Filename))
 				response.JSON(c, "", http.StatusInternalServerError, nil, "invalid file extension")
 				return
 			}
 
-			session, tempFileUrl,err := service.PreAWS(filepath.Ext(f.Filename),"blogphoto")
-			if err != nil{
+			session, tempFileUrl, err := service.PreAWS(filepath.Ext(f.Filename), "blogphoto")
+			if err != nil {
 				response.JSON(c, "", http.StatusInternalServerError, nil, "unable to create AWS session"+err.Error())
 				return
 			}
-			url, err := service.UploadFileToS3(session,file,tempFileUrl,f.Size)
-			if err != nil{
+			url, err := service.UploadFileToS3(session, file, tempFileUrl, f.Size)
+			if err != nil {
 				response.JSON(c, "", http.StatusInternalServerError, nil, "unable to upload to File"+err.Error())
 				return
 			}
-
-			post.Images = append(post.Images, url)	
+			imgs := entity.Image{ImageUrl: url}
+			post.Images = append(post.Images, imgs)
 		}
+
 		post.UserID = user.ID
-		post.Author = user.FirstName +" "+ user.LastName
+		post.Author = user.FirstName + " " + user.LastName
 		post.Title = c.PostForm("title")
 		post.Body = c.PostForm("body")
-		
+
 		a.DB.CreatePost(post)
-		response.JSON(c, "blog created successfully", http.StatusOK, nil, "")
+		response.JSON(c, "blog created successfully", http.StatusOK, post, "")
 	}
 }

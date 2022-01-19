@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	log.SetFlags(log.Lshortfile | log.Llongfile)
 	env := os.Getenv("GIN_MODE")
 	if env != "release" {
 		if err := godotenv.Load(); err != nil {

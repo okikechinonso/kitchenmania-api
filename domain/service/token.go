@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,7 @@ func GenerateClaims(email string) (accessClaims jwt.MapClaims, refreshClaims jwt
 		"sub": 1,
 	}
 
-	return 
+	return
 }
 
 func GenerateToken(signMethod *jwt.SigningMethodHMAC, claims jwt.MapClaims, secret *string) (*string, error) {
@@ -52,6 +53,7 @@ func AuthorizeToken(token *string, secret *string) (*jwt.Token, jwt.MapClaims, e
 		claims := jwt.MapClaims{}
 		token, err := verifyToken(token, claims, secret)
 		if err != nil {
+			log.Println("Authorization err", err)
 			return nil, nil, err
 		}
 		return token, claims, nil

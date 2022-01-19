@@ -1,10 +1,13 @@
 package persistence
 
-import "kitchenmaniaapi/domain/entity"
+import (
+	"kitchenmaniaapi/domain/entity"
+)
 
 func (d *Database) TokenInBlacklist(token *string) bool {
-	result := d.DB.Where("token = ?", token).Find(&entity.Blacklist{})
+	result := d.DB.Where("token = ?", *token).Find(&entity.Blacklist{})
 	return result.Error != nil
+
 }
 
 func (d *Database) AddToBlackList(blacklist *entity.Blacklist) error {
