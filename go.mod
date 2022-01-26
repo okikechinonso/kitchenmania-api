@@ -1,5 +1,6 @@
 module kitchenmaniaapi
 
+// +heroku goVersion go1.17
 go 1.16
 
 require (
@@ -14,7 +15,6 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/pkg/errors v0.9.1
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
-	golang.org/x/text v0.3.7
 	google.golang.org/protobuf v1.25.0 // indirect
 	gorm.io/driver/postgres v1.2.3
 	gorm.io/gorm v1.22.4
