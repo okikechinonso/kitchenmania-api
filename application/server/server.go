@@ -67,7 +67,10 @@ func (s *Server) setupRoute() *gin.Engine {
 func (s *Server) Start() {
 	r := s.setupRoute()
 	port := os.Getenv("PORT")
-
+	PORT := fmt.Sprintf(":%s", os.Getenv("PORT"))
+	if PORT == ":" {
+		PORT = ":8080"
+	}
 	server := &http.Server{
 		Addr:    port,
 		Handler: r,
