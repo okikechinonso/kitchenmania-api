@@ -1,4 +1,4 @@
-package persistence
+package pgsql
 
 import (
 	"fmt"

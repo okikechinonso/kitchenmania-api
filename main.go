@@ -3,7 +3,7 @@ package main
 import (
 	"kitchenmaniaapi/application/handlers"
 	"kitchenmaniaapi/application/server"
-	"kitchenmaniaapi/infrastructure/persistence"
+	"kitchenmaniaapi/infrastructure/persistence/pgsql"
 	"log"
 	"os"
 
@@ -19,7 +19,7 @@ func main() {
 		}
 	}
 
-	db := &persistence.Database{}
+	db := &pgsql.Database{}
 	db.Init()
 	db.Migrate()
 	s := server.Server{App: handlers.App{DB: db}}

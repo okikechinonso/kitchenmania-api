@@ -6,6 +6,7 @@ import (
 	"kitchenmaniaapi/interfaces/response"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,7 +28,7 @@ func (a *App) SignUp() gin.HandlerFunc {
 			response.JSON(c, "", http.StatusInternalServerError, nil, "internal server error")
 			return
 		}
-
+		user.Email = strings.ToLower(user.Email)
 		user.HashedPassword = string(hashedPassword)
 		_, err = a.DB.FindUserByEmail(user.Email)
 		if err != nil {
@@ -43,8 +44,8 @@ func (a *App) SignUp() gin.HandlerFunc {
 	}
 }
 
-func (a *App) SignupWithGoogle() gin.HandlerFunc{
-	return func (c *gin.Context)  {
-		
+func (a *App) SignupWithGoogle() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
 	}
 }

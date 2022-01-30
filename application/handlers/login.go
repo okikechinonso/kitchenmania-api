@@ -20,12 +20,14 @@ func (a *App) Login() gin.HandlerFunc {
 		}{}
 		err := helpers.Decode(c, &loginDetail)
 		if err != nil {
+			log.Println(err)
 			response.JSON(c, "", http.StatusBadRequest, loginDetail, err.Error())
 			return
 		}
 
 		user, err := a.DB.FindUserByEmail(loginDetail.Email)
 		if err != nil {
+			log.Println(err)
 			response.JSON(c, "invalid email or password", http.StatusBadRequest, nil, err.Error())
 			return
 		}

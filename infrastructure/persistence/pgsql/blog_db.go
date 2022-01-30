@@ -1,5 +1,5 @@
 // DB blog methods
-package persistence
+package pgsql
 
 import "kitchenmaniaapi/domain/entity"
 
