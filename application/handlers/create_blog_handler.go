@@ -65,7 +65,7 @@ func (a *App) CreateBlog() gin.HandlerFunc {
 		post.Title = c.PostForm("title")
 		post.Body = c.PostForm("body")
 
-		a.DB.CreatePost(post)
+		a.DB.CreatePost(*post)
 		response.JSON(c, "blog created successfully", http.StatusOK, post, "")
 	}
 }

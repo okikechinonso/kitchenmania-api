@@ -1,7 +1,9 @@
 package handlers
 
-import "kitchenmaniaapi/infrastructure/persistence/pgsql"
+import (
+	db "kitchenmaniaapi/infrastructure/persistence/dbinterface"
+)
 
 type App struct {
-	DB pgsql.DbInterface
+	DB db.DbInterface
 }

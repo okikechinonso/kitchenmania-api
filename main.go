@@ -3,7 +3,7 @@ package main
 import (
 	"kitchenmaniaapi/application/handlers"
 	"kitchenmaniaapi/application/server"
-	"kitchenmaniaapi/infrastructure/persistence/pgsql"
+	"kitchenmaniaapi/infrastructure/persistence/dbconn"
 	"log"
 	"os"
 
@@ -18,7 +18,7 @@ func main() {
 			log.Fatalf("couldn't load env vars: %v", err)
 		}
 	}
-	db := &pgsql.Database{}
+	db := &dbconn.Database{}
 	db.Init()
 	db.Migrate()
 	s := server.Server{App: handlers.App{DB: db}}
