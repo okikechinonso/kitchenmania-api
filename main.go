@@ -18,7 +18,6 @@ func main() {
 			log.Fatalf("couldn't load env vars: %v", err)
 		}
 	}
-
 	db := &pgsql.Database{}
 	db.Init()
 	db.Migrate()

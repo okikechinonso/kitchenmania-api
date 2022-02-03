@@ -1,4 +1,4 @@
-package pgsql
+package dbconn
 
 import (
 	"fmt"
@@ -6,12 +6,14 @@ import (
 	"log"
 	"os"
 
+	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type Database struct {
-	DB *gorm.DB
+	PgDB *gorm.DB
+	MongoClient *mongo.Client
 }
 
 func (d *Database) Init() {
@@ -35,10 +37,10 @@ func (d *Database) Init() {
 	}
 
 	log.Println("connected to database")
-	d.DB = db
+	d.PgDB = db
 }
 func (d *Database) Migrate() {
-	err := d.DB.AutoMigrate(&entity.User{}, &entity.Blacklist{}, &entity.Blog{})
+	err := d.PgDB.AutoMigrate(&entity.User{}, &entity.Blacklist{}, &entity.Blog{})
 	if err != nil {
 		log.Printf("%s", err)
 	}
