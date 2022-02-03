@@ -1,18 +1,20 @@
 package dbconn
 
 import (
+	"context"
 	"fmt"
 	"kitchenmaniaapi/domain/entity"
 	"log"
 	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type Database struct {
-	PgDB *gorm.DB
+	PgDB        *gorm.DB
 	MongoClient *mongo.Client
 }
 
@@ -25,7 +27,7 @@ func (d *Database) Init() {
 	sslmode := os.Getenv("DB_MODE")
 	var dns string
 	databaseurl := os.Getenv("DATABASE_URL")
-	if databaseurl == ""{
+	if databaseurl == "" {
 		dns = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", host, user, password, dbName, port, sslmode)
 	} else {
 		dns = databaseurl
@@ -33,10 +35,16 @@ func (d *Database) Init() {
 
 	db, err := gorm.Open(postgres.Open(dns), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("unable to connect to database %v", err)
+		log.Fatalf("unable to connect to database postgresDB %v", err)
 	}
+	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(os.Getenv("MONGO_URI")))
 
-	log.Println("connected to database")
+	if err != nil {
+		log.Fatalf("unable to connect to database MongoDB %v", err)
+	}
+	d.MongoClient = client
+
+	log.Println("connected to databases")
 	d.PgDB = db
 }
 func (d *Database) Migrate() {
