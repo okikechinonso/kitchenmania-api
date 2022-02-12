@@ -24,6 +24,6 @@ type Image struct {
 	ImageUrl string `gorm:"not null" binding:"reqiured"`
 }
 type Like struct {
-	UserID string
-	Status bool
+	UserID string`bson:"blog_id" binding:"required"`
+	Status bool `bson:"status" binding:"required"`
 }

@@ -65,8 +65,8 @@ func (a *App) CreateBlog() gin.HandlerFunc {
 		
 
 		post.UserID = user.ID
-		post.Model.ID = string(bson.NewObjectId().Hex())
-		post.Author = user.FirstName + " " + user.LastName
+		post.ID = bson.NewObjectId().Hex()
+		post.Author = strings.Trim(user.FirstName + " " + user.LastName," ")
 		post.Title = c.PostForm("title")
 		post.Body = c.PostForm("body")
 

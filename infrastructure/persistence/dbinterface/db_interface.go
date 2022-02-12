@@ -7,4 +7,5 @@ type DbInterface interface {
 	FindUserByEmail(email string) (*entity.User, error)
 	CreatePost(blog entity.Blog) error
 	TokenInBlacklist(token *string) bool
+	DeletePost(blogID, userID string)error
 }
