@@ -69,8 +69,13 @@ func (a *App) CreateBlog() gin.HandlerFunc {
 		post.Author = strings.Trim(user.FirstName + " " + user.LastName," ")
 		post.Title = c.PostForm("title")
 		post.Body = c.PostForm("body")
+		log.Println(c)
 
-		a.DB.CreatePost(*post)
+		err = a.DB.CreatePost(*post)
+		if err != nil {
+			response.JSON(c, "", http.StatusInternalServerError, nil, err.Error())
+			return
+		}
 		response.JSON(c, "blog created successfully", http.StatusOK, post, "")
 	}
 }

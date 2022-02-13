@@ -4,6 +4,8 @@ import (
 	"context"
 	"kitchenmaniaapi/domain/entity"
 	"log"
+
+	"github.com/globalsign/mgo/bson"
 )
 
 func (d *Database) CreatePost(blog entity.Blog) error {
@@ -25,9 +27,12 @@ func (d *Database) DeletePost(blogID, userID string)error{
 	return err
 }
 
-func(d *Database) UpdatePost(blogID string) error{
+func(d *Database) UpdatePost(blog entity.Blog) error{
 	coll := d.MongoClient.Database("kitchenmania").Collection("blog")
-	_,err := coll.UpdateByID(context.TODO(),blogID, entity.Blog{})
+	filter := bson.M{"user_id":blog.UserID,"author":blog.Author}
+	log.Println(blog.Author,blog.UserID)
+	// update := bson.D{{"$set",blog}}
+	err := coll.FindOneAndUpdate(context.TODO(),filter, bson.M{"$set":blog}).Decode(&entity.Blog{})
 	if err != nil {
 		log.Println(err)
 	}

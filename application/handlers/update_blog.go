@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"kitchenmaniaapi/domain/entity"
-	"kitchenmaniaapi/interfaces/helpers"
 	"kitchenmaniaapi/interfaces/response"
 	"net/http"
 
@@ -13,16 +12,29 @@ func (app *App) UpdatePost() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		userI, exists := c.Get("user")
 		if !exists {
-			response.JSON(c, "can't get user from context", http.StatusInternalServerError, nil, "no user found")
+			response.JSON(c, "", http.StatusInternalServerError, nil, "no user found")
 			return
 		}
-		user := userI.(entity.User)
-		_,err := app.DB.FindUserByEmail(user.Email)
-		
-		blog := entity.Blog{}
-		err := helpers.Decode(c, blog)
-		if err != nil{
-			
+		user := userI.(*entity.User)
+		_, err := app.DB.FindUserByEmail(user.Email)
+		if err != nil {
+			response.JSON(c, "", http.StatusUnauthorized, nil, "user not authorized")
+			return
 		}
+		// log.Println(c.PostForm("title"),c)
+
+		blog := entity.Blog{
+			Title: c.PostForm("title"),
+			Body:  c.PostForm("body"),
+			UserID: user.ID,
+			Author: user.FirstName+" "+user.LastName,
+		}
+
+		err = app.DB.UpdatePost(blog)
+		if err != nil {
+			response.JSON(c, "", http.StatusInternalServerError, nil, err.Error())
+			return
+		}
+
 	}
 }

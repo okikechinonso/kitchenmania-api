@@ -1,7 +1,7 @@
 package entity
 
 type Blog struct {
-	ID       string    `bson:"user_id"`
+	ID       string    `bson:"blog_id"`
 	UserID   string    `json:"user_id" bson:"user_id" `
 	Author   string    `json:"author" bson:"author"`
 	Title    string    `json:"title" gorm:"not null"  bson:"title" binding:"required" form:"title"`

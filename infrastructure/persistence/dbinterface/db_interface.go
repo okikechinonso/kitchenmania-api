@@ -8,4 +8,5 @@ type DbInterface interface {
 	CreatePost(blog entity.Blog) error
 	TokenInBlacklist(token *string) bool
 	DeletePost(blogID, userID string)error
+	UpdatePost(blog entity.Blog) error
 }

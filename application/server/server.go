@@ -25,6 +25,7 @@ func (s *Server) defineRoute(router *gin.Engine) {
 	authorized := apirouter.Group("/")
 	authorized.Use(middleware.Authorize(s.App.DB.FindUserByEmail, s.App.DB.TokenInBlacklist))
 	authorized.POST("/create", s.App.CreateBlog())
+	authorized.POST("/updateblog",s.App.UpdatePost())
 }
 
 func (s *Server) setupRoute() *gin.Engine {
