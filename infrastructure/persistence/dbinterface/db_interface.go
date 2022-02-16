@@ -9,4 +9,5 @@ type DbInterface interface {
 	TokenInBlacklist(token *string) bool
 	DeletePost(blogID, userID string)error
 	UpdatePost(blog entity.Blog) error
+	GetAllPosts(user entity.User) ([]entity.Blog, error)
 }
