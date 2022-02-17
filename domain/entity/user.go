@@ -38,5 +38,6 @@ type User struct {
 
 type Follower struct {
 	Model
-	UserID string `json:"user_id" gorm:"foreignkey:User(id)"`
+	FollowerID string `json:"follower_id" gorm:"foreignkey:User(id)"`
+	FollowedID string `json:"followed_id" gorm:"foreignkey:User(id)"`
 }

@@ -13,3 +13,15 @@ func (d *Database) FindUserByEmail(email string) (*entity.User,error) {
 	err := d.PgDB.Where("email = ?", email).First(&user).Error
 	return &user,err
 }
+func (d *Database) FindAllUsers() (user []*entity.User, err error){
+	return user, nil
+}
+func (d *Database) CreateFollower(follower entity.Follower) error{
+	result := d.PgDB.Create(follower)
+	return result.Error
+}
+func (d *Database) GetAllFollowers(followedID string) error{
+	return nil
+}
+
+

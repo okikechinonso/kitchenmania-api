@@ -61,3 +61,6 @@ func (d *Database) GetAllPosts(user entity.User) ([]entity.Blog, error) {
 	}
 	return result, err
 }
+func (d *Database) LikePost(like entity.Like) error{
+	return nil
+}
