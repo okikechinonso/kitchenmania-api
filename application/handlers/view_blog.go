@@ -3,6 +3,7 @@ package handlers
 import (
 	"kitchenmaniaapi/domain/entity"
 	"kitchenmaniaapi/interfaces/response"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,8 @@ func (app *App) GetAllPost() gin.HandlerFunc {
 			response.JSON(c, "", http.StatusInternalServerError, nil, "no user found")
 			return
 		}
-		response.JSON(c, "successful", http.StatusInternalServerError, posts, "")
+		response.JSON(c, "successful", http.StatusAccepted, posts, "")
+		log.Println(c)
 
 	}
 }

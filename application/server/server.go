@@ -27,6 +27,7 @@ func (s *Server) defineRoute(router *gin.Engine) {
 	authorized.POST("/create", s.App.CreateBlog())
 	authorized.POST("/updateblog",s.App.UpdatePost())
 	authorized.GET("/posts",s.App.GetAllPost())
+	authorized.DELETE("/delete",s.App.DeletePost())
 }
 
 func (s *Server) setupRoute() *gin.Engine {

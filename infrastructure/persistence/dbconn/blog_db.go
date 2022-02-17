@@ -20,7 +20,8 @@ func (d *Database) CreatePost(blog entity.Blog) error {
 
 func (d *Database) DeletePost(blogID, userID string) error {
 	coll := d.MongoClient.Database("kitchenmania").Collection("blog")
-	_, err := coll.DeleteOne(context.TODO(), blogID)
+	filter := bson.M{"user_id":userID,"blog_id":blogID}
+	_, err := coll.DeleteOne(context.TODO(), filter)
 	if err != nil {
 		log.Println(err)
 	}
@@ -31,7 +32,6 @@ func (d *Database) UpdatePost(blog entity.Blog) error {
 	coll := d.MongoClient.Database("kitchenmania").Collection("blog")
 	filter := bson.M{"user_id": blog.UserID, "author": blog.Author}
 	log.Println(blog.Author, blog.UserID)
-	// update := bson.D{{"$set",blog}}
 	err := coll.FindOneAndUpdate(context.TODO(), filter, bson.M{"$set": blog}).Decode(&entity.Blog{})
 	if err != nil {
 		log.Println(err)
