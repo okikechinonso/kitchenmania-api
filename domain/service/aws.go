@@ -24,6 +24,7 @@ func PreAWS(fileExtension, folder string) (*session.Session, string, error) {
 			os.Getenv("AWS_TOKEN"),
 		),
 	})
+
 	return session, tempFileUrl, err
 }
 
@@ -47,3 +48,5 @@ func UploadFileToS3(s *session.Session, file multipart.File, filename string, si
 	})
 	return url, err
 }
+
+
